@@ -1,0 +1,14 @@
+<functions>
+    <function>
+        <name>neoTopK</name>
+        <command>clickhouse-udf-neo-top-k {k:UInt64}</command>
+        <argument>
+            <type>String</type>
+        </argument>
+        <format>ArrowStream</format>
+        <return_type>Array(Tuple(String, UInt64))</return_type>
+        <type>executable</type>
+        <send_chunk_header>true</send_chunk_header>
+        <execute_direct>true</execute_direct>
+    </function>
+</functions>

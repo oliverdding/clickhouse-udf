@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<company>
+    <profiles>
+        <default>
+            <max_memory_usage>10000000000</max_memory_usage>
+            <max_execution_time>60</max_execution_time>
+            <use_uncompressed_cache>0</use_uncompressed_cache>
+            <load_balancing>in_order</load_balancing>
+            <log_formatted_queries>1</log_formatted_queries>
+            <log_queries from_env="CLICKHOUSE_LOG_QUERIES" />
+            <log_query_threads from_env="CLICKHOUSE_LOG_QUERY_THREADS" />
+            <log_query_views from_env="CLICKHOUSE_LOG_QUERY_VIEWS" />
+            <allow_experimental_object_type>1</allow_experimental_object_type>
+            <!-- https://github.com/ClickHouse/ClickHouse/issues/15638#issuecomment-1107452615 -->
+            <query_profiler_real_time_period_ns>0</query_profiler_real_time_period_ns>
+            <query_profiler_cpu_time_period_ns>0</query_profiler_cpu_time_period_ns>
+            <memory_profiler_step>0</memory_profiler_step>
+            <trace_profile_events>0</trace_profile_events>
+        </default>
+        <query>
+            <max_memory_usage>5000000000</max_memory_usage>
+            <os_thread_priority>19</os_thread_priority>
+            <max_execution_time>60</max_execution_time>
+            <readonly>1</readonly>
+        </query>
+    </profiles>
+
+    <users>
+        <default>
+            <password>default</password>
+            <profile>default</profile>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+            <quota>default</quota>
+        </default>
+        <root>
+            <password>root</password>
+            <profile>default</profile>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+            <quota>default</quota>
+        </root>
+        <viewer>
+            <password>viewer</password>
+            <profile>query</profile>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+            <quota>default</quota>
+        </viewer>
+    </users>
+
+    <quotas>
+        <default>
+            <interval>
+                <duration>3600</duration>
+                <queries>0</queries>
+                <errors>0</errors>
+                <result_rows>0</result_rows>
+                <read_rows>0</read_rows>
+                <execution_time>0</execution_time>
+            </interval>
+        </default>
+    </quotas>
+</company>

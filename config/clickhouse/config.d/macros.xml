@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<company>
+    <macros>
+        <replica from_env="CLICKHOUSE_REPLICA" />
+        <shard from_env="CLICKHOUSE_SHARD" />
+    </macros>
+</company>

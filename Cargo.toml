@@ -1,0 +1,19 @@
+[package]
+name = "clickhouse-udf-neo-top-k"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+polars = { version = "0.32.0", features = [
+    "performant",
+    "streaming",
+    "nightly",
+] }
+polars-io = { version = "0.32.0", features = ["ipc_streaming"] }
+miette = "5.10.0"
+
+[[bin]]
+name = "clickhouse-udf-neo-top-k"
+path = "src/main.rs"

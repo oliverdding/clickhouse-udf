@@ -1,0 +1,60 @@
+<company>
+
+    <query_log>
+        <database>system</database>
+        <table>query_log</table>
+        <engine>Engine = MergeTree() PARTITION BY toYearWeek(event_date) ORDER BY event_time TTL event_date + INTERVAL 1 WEEK</engine>
+        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+        <settings>ttl_only_drop_parts=1</settings>
+    </query_log>
+
+    <query_thread_log>
+        <database>system</database>
+        <table>query_thread_log</table>
+        <engine>Engine = MergeTree() PARTITION BY toYearWeek(event_date) ORDER BY event_time TTL event_date + INTERVAL 1 WEEK</engine>
+        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+        <settings>ttl_only_drop_parts=1</settings>
+    </query_thread_log>
+
+    <query_views_log>
+        <database>system</database>
+        <table>query_views_log</table>
+        <engine>Engine = MergeTree() PARTITION BY toYearWeek(event_date) ORDER BY event_time TTL event_date + INTERVAL 1 WEEK</engine>
+        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+        <settings>ttl_only_drop_parts=1</settings>
+    </query_views_log>
+
+    <trace_log>
+        <database>system</database>
+        <table>trace_log</table>
+        <engine>Engine = MergeTree() PARTITION BY toYearWeek(event_date) ORDER BY event_time TTL event_date + INTERVAL 1 WEEK</engine>
+        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+        <settings>ttl_only_drop_parts=1</settings>
+    </trace_log>
+
+    <asynchronous_insert_log>
+        <database>system</database>
+        <table>asynchronous_insert_log</table>
+        <engine>Engine = MergeTree() PARTITION BY toYearWeek(event_date) ORDER BY event_time TTL event_date + INTERVAL 1 WEEK</engine>
+        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+        <settings>ttl_only_drop_parts=1</settings>
+    </asynchronous_insert_log>
+
+    <part_log>
+        <database>system</database>
+        <table>part_log</table>
+        <engine>Engine = MergeTree() PARTITION BY toYearWeek(event_date) ORDER BY event_time TTL event_date + INTERVAL 1 WEEK</engine>
+        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+        <settings>ttl_only_drop_parts=1</settings>
+    </part_log>
+
+    <metric_log>
+        <database>system</database>
+        <table>metric_log</table>
+        <engine>Engine = MergeTree() PARTITION BY toYearWeek(event_date) ORDER BY event_time TTL event_date + INTERVAL 1 WEEK</engine>
+        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+        <collect_interval_milliseconds>1000</collect_interval_milliseconds>
+        <settings>ttl_only_drop_parts=1</settings>
+    </metric_log>
+
+</company>
