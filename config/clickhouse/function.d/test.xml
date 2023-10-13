@@ -1,0 +1,13 @@
+<functions>
+    <function>
+        <name>test</name>
+        <command>test</command>
+        <argument>
+            <type>UInt64</type>
+        </argument>
+        <format>RowBinary</format>
+        <return_type>UInt64</return_type>
+        <type>executable</type>
+        <execute_direct>true</execute_direct>
+    </function>
+</functions>
