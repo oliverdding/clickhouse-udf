@@ -1,12 +1,12 @@
 <functions>
     <function>
-        <name>test</name>
-        <command>test</command>
+        <name>neoTopK</name>
+        <command>neo_top_k {k:UInt64}</command>
         <argument>
-            <type>UInt64</type>
+            <type>String</type>
         </argument>
         <format>RowBinary</format>
-        <return_type>UInt64</return_type>
+        <return_type>Array(Tuple(String, UInt64))</return_type>
         <type>executable</type>
         <execute_direct>true</execute_direct>
     </function>

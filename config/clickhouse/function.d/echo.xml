@@ -1,12 +1,12 @@
 <functions>
     <function>
-        <name>neoTopK</name>
-        <command>clickhouse-udf-neo-top-k {k:UInt64}</command>
+        <name>echo</name>
+        <command>echo</command>
         <argument>
-            <type>String</type>
+            <type>UInt64</type>
         </argument>
         <format>RowBinary</format>
-        <return_type>Array(Tuple(String, UInt64))</return_type>
+        <return_type>UInt64</return_type>
         <type>executable</type>
         <execute_direct>true</execute_direct>
     </function>

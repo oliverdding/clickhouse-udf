@@ -1,6 +1,6 @@
 services:
   clickhouse:
-    image: 'clickhouse/clickhouse-server:23.9-alpine'
+    image: 'clickhouse/clickhouse-server:23.9'
     container_name: clickhouse
     hostname: clickhouse
     ulimits:
@@ -35,8 +35,8 @@ services:
       - ./config/clickhouse:/etc/clickhouse-server
       - clickhouse-data:/var/lib/clickhouse
       - clickhouse-log:/var/log/clickhouse-server
-      - ./target/debug/clickhouse-udf-neo-top-k:/var/lib/clickhouse/user_scripts/clickhouse-udf-neo-top-k
-      - ./target/debug/test:/var/lib/clickhouse/user_scripts/test
+      - ./target/debug/neo_top_k:/var/lib/clickhouse/user_scripts/neo_top_k
+      - ./target/debug/echo:/var/lib/clickhouse/user_scripts/echo
     cap_add:
       - SYS_NICE
       - NET_ADMIN

@@ -11,9 +11,9 @@ miette = "5.10.0"
 topk = "0.5.0"
 
 [[bin]]
-name = "clickhouse-udf-neo-top-k"
-path = "src/clickhouse-udf-neo-top-k.rs"
+name = "neo_top_k"
+path = "src/neo_top_k.rs"
 
 [[bin]]
-name = "test"
-path = "src/test.rs"
+name = "echo"
+path = "src/echo.rs"

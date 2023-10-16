@@ -1,8 +1,9 @@
 use bytes::BufMut;
 use miette::{miette, IntoDiagnostic, Result};
 use std::{
+    borrow::BorrowMut,
     env,
-    io::{BufReader, BufWriter, Read, Write},
+    io::{Bytes, Read, Stdin, Write},
     process::ExitCode,
 };
 use topk::FilteredSpaceSaving;
@@ -13,6 +14,10 @@ fn main() -> ExitCode {
         10_usize
     } else {
         match args[1].parse() {
+            Ok(n) if n < 1 || n > 65536 => {
+                eprintln!("k must be between 1 and 65536");
+                return ExitCode::FAILURE;
+            }
             Ok(n) => n,
             Err(e) => {
                 eprintln!("failed to parse input k: {}", e);
@@ -20,15 +25,11 @@ fn main() -> ExitCode {
             }
         }
     };
-    if num < 1 || num > 65536 {
-        eprintln!("k must be between 1 and 65536");
-        return ExitCode::FAILURE;
-    }
 
     match top_k(num) {
         Ok(()) => {}
         Err(e) => {
-            eprint!("failed execute top_k: {}", e);
+            eprint!("failed execute neoTopK: {}", e);
             return ExitCode::FAILURE;
         }
     };
@@ -37,18 +38,21 @@ fn main() -> ExitCode {
 }
 
 fn top_k(k: usize) -> Result<()> {
-    let mut reader = BufReader::new(std::io::stdin());
-    let mut writer = BufWriter::new(std::io::stdout());
+    let mut iter = std::io::stdin().bytes();
+    let mut writer = std::io::stdout();
 
     let mut topk = FilteredSpaceSaving::new(k);
 
     loop {
-        let str_size = read_uleb128(&mut reader)?;
+        let str_size = read_uleb128(iter.borrow_mut())?;
         if str_size == 0 {
             break;
         }
-        let mut buf = vec![0_u8; str_size as usize];
-        reader.read_exact(&mut buf).into_diagnostic()?;
+        let buf = iter
+            .borrow_mut()
+            .take(str_size as usize)
+            .map(|b| b.unwrap())
+            .collect();
 
         topk.insert(String::from_utf8(buf).into_diagnostic()?, 1);
     }
@@ -66,6 +70,7 @@ fn top_k(k: usize) -> Result<()> {
     }
 
     writer.flush().into_diagnostic()?;
+
     Ok(())
 }
 
@@ -81,18 +86,31 @@ fn write_uleb128(target: &mut impl Write, x: u64) -> Result<usize> {
     Ok(i + 1)
 }
 
-fn read_uleb128(source: &mut impl Read) -> Result<u64> {
+fn read_uleb128(source: &mut Bytes<Stdin>) -> Result<u64> {
     let mut result = 0_u64;
-    let mut buf = [0_u8; 1];
     for i in 0..10 {
-        source.read(&mut buf).into_diagnostic()?;
-        if (buf[0] & 0x80) == 0 {
-            if i == 9 && buf[0] > 1 {
-                return Err(miette!("overflow when decoding var uint"));
+        match source.next() {
+            Some(b) => match b {
+                Ok(b) => {
+                    if (b & 0x80) == 0 {
+                        if i == 9 && b > 1 {
+                            return Err(miette!("overflow when decoding uleb128"));
+                        }
+                        return Ok(result | (u64::from(b) << (7 * i)));
+                    }
+                    result |= u64::from(b & 0x7F) << (7 * i);
+                }
+                Err(err) => {
+                    return Err(miette!(
+                        "failed to read byte when decoding uleb128: {}",
+                        err
+                    ))
+                }
+            },
+            None => {
+                return Err(miette!("unexpected EOF whening decoding uleb128"));
             }
-            return Ok(result | (u64::from(buf[0]) << (7 * i)));
         }
-        result |= u64::from(buf[0] & 0x7F) << (7 * i);
     }
-    Err(miette!("overflow when decoding var uint"))
+    Err(miette!("overflow when decoding uleb128"))
 }
