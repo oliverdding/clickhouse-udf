@@ -3,9 +3,12 @@
     <remote_servers>
         <default_cluster>
             <shard>
+                <internal_replication>true</internal_replication>
                 <replica>
                     <host>clickhouse</host>
                     <port>9000</port>
+                    <user>default</user>
+                    <password>default</password>
                 </replica>
             </shard>
         </default_cluster>
