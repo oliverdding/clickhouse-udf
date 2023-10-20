@@ -65,7 +65,6 @@ fn top_k(k: usize, mut reader: impl BufRead, mut writer: impl Write) -> Result<(
     }
 
     let element_array = topk.into_sorted_vec();
-    write_uleb128(&mut writer, 1)?; // only one row would be returned
     write_uleb128(&mut writer, std::cmp::min(k, element_array.len()) as u64)?; // user may pass less element than k, should return the smaller one
 
     let mut buf = vec![];
